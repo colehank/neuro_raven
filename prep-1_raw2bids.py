@@ -198,7 +198,6 @@ if __name__ == "__main__":
     for (subid, runid), fp in tqdm(raw_fps.items(), desc="raw2bids"):
         process_one(subid, runid, fp)
     # %%
-
     df = pd.DataFrame(EVENT_ID.items(), columns=["event_name", "marker"])
     rules_map = {"con": "constant", "di3": "distribution", "pro": "progression"}
     type_map = {
@@ -224,4 +223,8 @@ if __name__ == "__main__":
     df.loc[
         df["event_name"] == "begin", ["rule", "stim_type", "stim_level", "status"]
     ] = "run_start"
-    df.to_csv(bids_dir / "derivatives" / "events_metadata.tsv", sep="\t", index=False)
+    deriv_dir = bids_dir / "derivatives"
+    deriv_dir.mkdir(exist_ok=True)
+    df.to_csv(deriv_dir / "events_metadata.tsv", sep="\t", index=False)
+
+# %%
