@@ -11,14 +11,14 @@ DATA_DIR = Path(os.getenv("DATA_DIR"))
 bids_dir = DATA_DIR / "bids"
 DER_DIR = bids_dir / "derivatives"
 DER_DIR.mkdir(exist_ok=True)
-setup_logging(log_filename = ".logs/preprocessing.log")
+setup_logging(log_filename=".logs/preprocessing.log")
 all_bids_paths = find_matching_paths(bids_dir, extensions=".vhdr")
 # %%
 pipe = PrepPipe(
     input_paths=all_bids_paths,
     output_dir=DER_DIR / "preprocessed",
     use_cuda=True,
-    n_jobs=8
+    n_jobs=8,
 )
 pipe.run(
     filter_params={"highpass": 0.1, "lowpass": 100.0, "sfreq": 250.0},
@@ -26,6 +26,6 @@ pipe.run(
     remove_line_noise=True,
     apply_ica=True,
     ica_params={"n_components": 20, "method": "infomax", "regress": True},
-    skip_existing=True
+    skip_existing=True,
 )
 # %%
